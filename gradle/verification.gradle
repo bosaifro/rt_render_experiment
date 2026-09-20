@@ -1,0 +1,17 @@
+tasks.register('verifyReleaseJar') {
+    dependsOn tasks.named('jar')
+    doLast {
+        def artifact = tasks.named('jar', Jar).get().archiveFile.get().asFile
+        def zip = new java.util.zip.ZipFile(artifact)
+        try {
+            if (zip.getEntry('fabric.mod.json') == null || zip.getEntry('rt_render_experiment.mixins.json') == null) throw new GradleException('Missing Fabric metadata')
+            def forbidden = zip.entries().findAll { it.name.endsWith('.log') || it.name.contains('archive') || it.name.contains('reports') }
+            if (!forbidden.isEmpty()) throw new GradleException("Release jar contains internal files: ${forbidden*.name}")
+        } finally { zip.close() }
+    }
+}
+
+tasks.named('check') {
+    dependsOn 'verifyReleaseJar'
+    dependsOn gradle.includedBuild('engine').task(':test')
+}

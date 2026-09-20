@@ -1,0 +1,51 @@
+plugins { id 'java-library' }
+
+def lwjglNatives = {
+    def name = System.getProperty('os.name').toLowerCase()
+    def arch = System.getProperty('os.arch').toLowerCase()
+    if (name.contains('windows')) return arch.contains('aarch64') ? 'windows-arm64' : 'windows'
+    if (name.contains('mac') || name.contains('darwin')) return arch.contains('aarch64') ? 'macos-arm64' : 'macos'
+    return arch.contains('aarch64') ? 'linux-arm64' : 'linux'
+}()
+
+group = 'dev.rt_render_experiment'
+version = '0.0.1'
+repositories { mavenCentral() }
+
+dependencies {
+    implementation 'org.lwjgl:lwjgl:3.4.1'
+    implementation 'org.lwjgl:lwjgl-vulkan:3.4.1'
+    implementation 'org.lwjgl:lwjgl-vma:3.4.1'
+    implementation 'org.joml:joml:1.10.8'
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'org.jspecify:jspecify:1.0.0'
+    runtimeOnly "org.lwjgl:lwjgl:3.4.1:natives-${lwjglNatives}"
+    runtimeOnly "org.lwjgl:lwjgl-vma:3.4.1:natives-${lwjglNatives}"
+    runtimeOnly 'org.slf4j:slf4j-simple:2.0.17'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.12.2'
+}
+
+java { toolchain { languageVersion = JavaLanguageVersion.of(25) } }
+sourceSets {
+    main { java.srcDirs = ['../modules/contract/src/main/java', '../modules/vulkan/src/main/java', '../modules/engine/src/main/java']; resources.srcDirs = [] }
+    test { java.srcDirs = ['../tests/engine/java']; resources.srcDirs = [] }
+}
+tasks.withType(JavaCompile).configureEach { options.compilerArgs.addAll(['-Xlint:all', '-Werror']) }
+def shaderPackage = layout.buildDirectory.dir('shader-package')
+def compileShaders = tasks.register('compileShaders', Exec) {
+    inputs.files(fileTree('../shaders') { include '**/*.slang'; include 'abi/*.json'; include 'profile.json' },
+        fileTree('../tools/shader_package') { include '*.py' }, file('../tools/shaders/spirv_validation.py'))
+    outputs.dir(shaderPackage)
+    environment 'PYTHONDONTWRITEBYTECODE', '1'
+    commandLine 'python3', file('../tools/shader_package/build_package.py').absolutePath, '--output', shaderPackage.get().asFile.absolutePath
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    dependsOn compileShaders
+    systemProperty 'rt_render_experiment.shaderPackage', shaderPackage.get().asFile.absolutePath
+    systemProperty 'rt_render_experiment.measure', providers.gradleProperty('rt_render_experimentMeasure').getOrElse('false')
+    jvmArgs '--enable-native-access=ALL-UNNAMED', '-Djoml.nounsafe=true'
+    testLogging { showStandardStreams = providers.gradleProperty('rt_render_experimentShowOutput').isPresent() }
+}

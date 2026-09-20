@@ -1,0 +1,32 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+def clientRunDir = providers.gradleProperty('rt_render_experimentRunDir').orElse('.run')
+
+loom {
+    splitEnvironmentSourceSets()
+    runs {
+        client {
+            runDir clientRunDir.get()
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+}
+
+apply from: 'gradle/modules.gradle'
+apply from: 'gradle/minecraft.gradle'
+apply from: 'gradle/verification.gradle'
+
+tasks.named('jar', Jar) {
+    archiveFileName = 'rt_render_experiment.jar'
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}

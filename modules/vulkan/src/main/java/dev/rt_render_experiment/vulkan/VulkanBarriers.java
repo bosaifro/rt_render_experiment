@@ -1,0 +1,216 @@
+package dev.rt_render_experiment.vulkan;
+
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.vulkan.KHRAccelerationStructure;
+import org.lwjgl.vulkan.KHRSynchronization2;
+import org.lwjgl.vulkan.VK13;
+import org.lwjgl.vulkan.VkCommandBuffer;
+import org.lwjgl.vulkan.VkDependencyInfo;
+import org.lwjgl.vulkan.VkMemoryBarrier2;
+
+
+public final class VulkanBarriers {
+   public record Scope(long srcStage, long srcAccess, long dstStage, long dstAccess) {
+      public Scope {
+         if (srcStage == 0L || dstStage == 0L) {
+            throw new IllegalArgumentException("barrier stages must be nonzero");
+         }
+      }
+   }
+
+   private static final long STAGE_AS_BUILD = KHRAccelerationStructure.VK_PIPELINE_STAGE_ACCELERATION_STRUCTURE_BUILD_BIT_KHR;
+   private static final long ACCESS_AS_READ = KHRAccelerationStructure.VK_ACCESS_ACCELERATION_STRUCTURE_READ_BIT_KHR;
+   private static final long ACCESS_AS_WRITE = KHRAccelerationStructure.VK_ACCESS_ACCELERATION_STRUCTURE_WRITE_BIT_KHR;
+
+
+   public static final Scope GRAPHICS_BOUNDARY = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT, VK13.VK_ACCESS_2_MEMORY_READ_BIT | VK13.VK_ACCESS_2_MEMORY_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT, VK13.VK_ACCESS_2_MEMORY_READ_BIT | VK13.VK_ACCESS_2_MEMORY_WRITE_BIT
+   );
+
+
+
+
+
+
+
+   public static final Scope PRIOR_ACCESS_TO_UPLOAD = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT,
+      VK13.VK_ACCESS_2_MEMORY_READ_BIT | VK13.VK_ACCESS_2_MEMORY_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT, VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT
+   );
+   public static final Scope UPLOAD_TO_SHADERS = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT, VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT | VK13.VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT | VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT
+   );
+   public static final Scope UPLOAD_TO_UPLOAD = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT, VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT, VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT
+   );
+   public static final Scope PRIOR_ACCESS_TO_AS_BUILD = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT,
+      VK13.VK_ACCESS_2_MEMORY_READ_BIT | VK13.VK_ACCESS_2_MEMORY_WRITE_BIT,
+      STAGE_AS_BUILD,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | ACCESS_AS_READ | ACCESS_AS_WRITE
+   );
+
+
+
+   public static final Scope BLAS_TO_TLAS = new Scope(
+      STAGE_AS_BUILD, ACCESS_AS_WRITE, STAGE_AS_BUILD, ACCESS_AS_READ | ACCESS_AS_WRITE
+   );
+   public static final Scope TLAS_TO_RAY_QUERIES = new Scope(
+      STAGE_AS_BUILD,
+      ACCESS_AS_WRITE,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT | VK13.VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT,
+      ACCESS_AS_READ
+   );
+   public static final Scope COUNTER_CLEAR_TO_SHADERS = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT | VK13.VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT
+   );
+   public static final Scope CLOUD_WRITES_TO_COMPUTE = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT
+   );
+   public static final Scope SHADE_TO_CLOUD_COMPOSITE = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT
+   );
+
+   public static final Scope SIGNALS_TO_TEMPORAL = SHADE_TO_CLOUD_COMPOSITE;
+
+   public static final Scope SHADE_TO_GUIDES = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT
+   );
+   public static final Scope EXPOSURE_TO_BLOOM = SHADE_TO_GUIDES;
+   public static final Scope RESAMPLE_TO_SHADE = SHADE_TO_GUIDES;
+   public static final Scope SIGNALS_TO_CAPTURE = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_READ_BIT
+   );
+   public static final Scope CAPTURE_TO_TEMPORAL = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_READ_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT
+   );
+   public static final Scope TEMPORAL_TO_FORWARD = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT | VK13.VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT
+         | VK13.VK_ACCESS_2_COLOR_ATTACHMENT_READ_BIT | VK13.VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT
+   );
+
+   public static final Scope SHADERS_TO_HISTORY_CLEAR = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT
+   );
+   public static final Scope HISTORY_CLEAR_TO_TEMPORAL = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT
+   );
+
+   public static final Scope RR_GUIDES_TO_HIT = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT
+   );
+   public static final Scope RR_GUIDES_TO_NGX = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT,
+      VK13.VK_ACCESS_2_MEMORY_READ_BIT | VK13.VK_ACCESS_2_MEMORY_WRITE_BIT
+   );
+
+   public static final Scope RR_OUTPUT_TO_FORWARD = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT,
+      VK13.VK_ACCESS_2_MEMORY_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT,
+      VK13.VK_ACCESS_2_MEMORY_READ_BIT | VK13.VK_ACCESS_2_MEMORY_WRITE_BIT
+   );
+
+   public static final Scope COMPOSITE_TO_EXPOSURE = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT | VK13.VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT | VK13.VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT
+   );
+
+   public static final Scope EXPOSURE_TO_DISPLAY = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT
+   );
+   public static final Scope SHADER_COUNTERS_TO_TRANSFER = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT | VK13.VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_READ_BIT
+   );
+   public static final Scope COUNTER_COPY_TO_HOST = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_HOST_BIT,
+      VK13.VK_ACCESS_2_HOST_READ_BIT
+   );
+
+   public static final Scope ATROUS_STEP = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT,
+      VK13.VK_ACCESS_2_SHADER_READ_BIT | VK13.VK_ACCESS_2_SHADER_WRITE_BIT
+   );
+   public static final Scope ARBITRARY_WRITES_TO_CAPTURE = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT,
+      VK13.VK_ACCESS_2_MEMORY_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_READ_BIT
+   );
+
+   public static final Scope CAPTURE_TO_CONSUMERS = new Scope(
+      VK13.VK_PIPELINE_STAGE_2_TRANSFER_BIT,
+      VK13.VK_ACCESS_2_TRANSFER_READ_BIT | VK13.VK_ACCESS_2_TRANSFER_WRITE_BIT,
+      VK13.VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT | VK13.VK_PIPELINE_STAGE_2_HOST_BIT,
+      VK13.VK_ACCESS_2_MEMORY_READ_BIT | VK13.VK_ACCESS_2_MEMORY_WRITE_BIT | VK13.VK_ACCESS_2_HOST_READ_BIT
+   );
+
+   private VulkanBarriers() {
+   }
+
+   public static void record(final VkCommandBuffer commandBuffer, final MemoryStack stack, final Scope scope) {
+      VkMemoryBarrier2.Buffer barrier = VkMemoryBarrier2.calloc(1, stack).sType$Default();
+      barrier
+         .srcStageMask(availableStages(commandBuffer,scope.srcStage()))
+         .srcAccessMask(scope.srcAccess())
+         .dstStageMask(availableStages(commandBuffer,scope.dstStage()))
+         .dstAccessMask(scope.dstAccess());
+      VkDependencyInfo dependency = VkDependencyInfo.calloc(stack).sType$Default().pMemoryBarriers(barrier);
+      KHRSynchronization2.vkCmdPipelineBarrier2KHR(commandBuffer, dependency);
+   }
+
+   private static long availableStages(VkCommandBuffer command,long stages) {
+      long ray=org.lwjgl.vulkan.KHRRayTracingPipeline.VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_KHR;
+      return !command.getDevice().getCapabilities().VK_KHR_ray_tracing_pipeline && (stages&ray)!=0
+         ? (stages&~ray)|VK13.VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT : stages;
+   }
+}

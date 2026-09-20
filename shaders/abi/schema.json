@@ -1,0 +1,1467 @@
+{
+  "family": "rt_render_experiment-r2",
+  "abi": 1,
+  "semanticApi": 1,
+  "matrixConvention": "explicit float4 rows; column vectors; row i of a matrix is rows[i]",
+  "records": {
+    "FrameRecord": {
+      "layout": "std140",
+      "fields": [
+        [
+          "float4",
+          "inverseViewProjection",
+          4
+        ],
+        [
+          "float4",
+          "viewProjection",
+          4
+        ],
+        [
+          "float4",
+          "previousViewProjection",
+          4
+        ],
+        [
+          "int4",
+          "anchor"
+        ],
+        [
+          "float4",
+          "anchorOffset"
+        ],
+        [
+          "float4",
+          "eye"
+        ],
+        [
+          "float4",
+          "sun"
+        ],
+        [
+          "float4",
+          "moon"
+        ],
+        [
+          "float4",
+          "environment"
+        ],
+        [
+          "float4",
+          "cloudGeometry"
+        ],
+        [
+          "uint4",
+          "cloudField"
+        ],
+        [
+          "uint4",
+          "extent"
+        ],
+        [
+          "uint4",
+          "outputExtent"
+        ],
+        [
+          "uint4",
+          "control"
+        ],
+        [
+          "uint4",
+          "counts"
+        ],
+        [
+          "float4",
+          "previousCamera"
+        ],
+        [
+          "float4",
+          "jitter"
+        ],
+        [
+          "float4",
+          "presentation"
+        ],
+        [
+          "float4",
+          "depthRange"
+        ],
+        [
+          "uint64_t",
+          "geometries"
+        ],
+        [
+          "uint64_t",
+          "sources"
+        ],
+        [
+          "uint64_t",
+          "materials"
+        ],
+        [
+          "uint64_t",
+          "atmosphere"
+        ],
+        [
+          "uint4",
+          "initialMediumIdentity",
+          4
+        ],
+        [
+          "float4",
+          "initialMediumOptical",
+          4
+        ],
+        [
+          "float4",
+          "initialMediumScattering",
+          4
+        ],
+        [
+          "float",
+          "initialMediumClearance"
+        ],
+        [
+          "uint64_t",
+          "emitters"
+        ]
+      ]
+    },
+    "HitRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "uint",
+          "geometry"
+        ],
+        [
+          "uint",
+          "primitive"
+        ],
+        [
+          "uint",
+          "flags"
+        ],
+        [
+          "uint",
+          "reserved"
+        ],
+        [
+          "float2",
+          "barycentrics"
+        ],
+        [
+          "float",
+          "distance"
+        ],
+        [
+          "float",
+          "footprint"
+        ]
+      ]
+    },
+    "SignalRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "diffuse"
+        ],
+        [
+          "float4",
+          "glossy"
+        ],
+        [
+          "float4",
+          "media"
+        ],
+        [
+          "float4",
+          "deterministic"
+        ],
+        [
+          "float4",
+          "transmittance"
+        ]
+      ]
+    },
+    "GuideRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "normalDepth"
+        ],
+        [
+          "float4",
+          "diffuseAlbedo"
+        ],
+        [
+          "float4",
+          "specularAlbedo"
+        ],
+        [
+          "float4",
+          "boundaryDiffuseDepth"
+        ],
+        [
+          "float4",
+          "boundarySpecular"
+        ],
+        [
+          "float4",
+          "boundaryNormalRoughness"
+        ],
+        [
+          "float4",
+          "motion"
+        ],
+        [
+          "uint4",
+          "identity"
+        ],
+        [
+          "uint4",
+          "path"
+        ]
+      ]
+    },
+    "HistoryRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "diffuse"
+        ],
+        [
+          "float4",
+          "glossy"
+        ],
+        [
+          "float4",
+          "media"
+        ],
+        [
+          "float4",
+          "momentsA"
+        ],
+        [
+          "float4",
+          "momentsB"
+        ],
+        [
+          "float4",
+          "normalDepth"
+        ],
+        [
+          "uint4",
+          "identity"
+        ],
+        [
+          "uint4",
+          "path"
+        ]
+      ]
+    },
+    "FilterRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "diffuse"
+        ],
+        [
+          "float4",
+          "glossy"
+        ],
+        [
+          "float4",
+          "media"
+        ]
+      ]
+    },
+    "LightHistoryRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "normalDistance"
+        ],
+        [
+          "int4",
+          "receiverCell"
+        ],
+        [
+          "uint4",
+          "identitySample"
+        ],
+        [
+          "float2",
+          "weightFrames"
+        ]
+      ]
+    },
+    "DispatchRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "uint4",
+          "control"
+        ]
+      ]
+    },
+    "TextureCopyRecord": {
+      "layout": "std140",
+      "fields": [
+        [
+          "uint4",
+          "extentMipOffset"
+        ]
+      ]
+    },
+    "PositionRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "float4",
+          "value"
+        ]
+      ]
+    },
+    "CornerRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "float2",
+          "uv"
+        ],
+        [
+          "uint",
+          "material"
+        ],
+        [
+          "uint",
+          "properties"
+        ],
+        [
+          "float4",
+          "tint"
+        ],
+        [
+          "float4",
+          "normal"
+        ],
+        [
+          "float4",
+          "tangent"
+        ],
+        [
+          "float4",
+          "layerUv"
+        ],
+        [
+          "float4",
+          "emissionTint"
+        ]
+      ]
+    },
+    "TriangleRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "uint4",
+          "indicesSurface"
+        ],
+        [
+          "uint4",
+          "partIdentity"
+        ],
+        [
+          "uint4",
+          "ordinalSource"
+        ]
+      ]
+    },
+    "SurfaceRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "uint4",
+          "definition"
+        ],
+        [
+          "float4",
+          "coverage"
+        ],
+        [
+          "uint4",
+          "textures"
+        ],
+        [
+          "float4",
+          "colorFactor"
+        ],
+        [
+          "float4",
+          "emissionFactor"
+        ],
+        [
+          "uint64_t",
+          "medium"
+        ],
+        [
+          "uint64_t",
+          "revision"
+        ],
+        [
+          "uint",
+          "hostOcclusion"
+        ],
+        [
+          "uint",
+          "boundary"
+        ],
+        [
+          "uint64_t",
+          "mediumDefinition"
+        ],
+        [
+          "uint4",
+          "layers"
+        ]
+      ]
+    },
+    "GeometryRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "uint64_t",
+          "positions"
+        ],
+        [
+          "uint64_t",
+          "corners"
+        ],
+        [
+          "uint64_t",
+          "triangles"
+        ],
+        [
+          "uint64_t",
+          "surfaces"
+        ],
+        [
+          "float4",
+          "current",
+          3
+        ],
+        [
+          "float4",
+          "inverse",
+          3
+        ],
+        [
+          "float4",
+          "previous",
+          3
+        ],
+        [
+          "uint4",
+          "identity"
+        ],
+        [
+          "uint4",
+          "revisions"
+        ],
+        [
+          "uint4",
+          "state"
+        ],
+        [
+          "uint64_t",
+          "previousPositions"
+        ]
+      ]
+    },
+    "SourceRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "float4",
+          "centerRadius"
+        ],
+        [
+          "float4",
+          "normalArea"
+        ],
+        [
+          "float4",
+          "tangentSupport"
+        ],
+        [
+          "float4",
+          "importance"
+        ],
+        [
+          "uint4",
+          "definition"
+        ],
+        [
+          "uint4",
+          "association"
+        ],
+        [
+          "uint4",
+          "identity"
+        ],
+        [
+          "int4",
+          "cell"
+        ],
+        [
+          "uint4",
+          "publication"
+        ]
+      ]
+    },
+    "LightCellRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "int4",
+          "coordinateCount"
+        ],
+        [
+          "uint4",
+          "range"
+        ]
+      ]
+    },
+    "SourceTableRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "uint64_t",
+          "sources"
+        ],
+        [
+          "uint64_t",
+          "cells"
+        ],
+        [
+          "uint4",
+          "counts"
+        ]
+      ]
+    },
+    "MaterialRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "uint4",
+          "classification"
+        ],
+        [
+          "float4",
+          "tintOxidation"
+        ],
+        [
+          "float4",
+          "finish"
+        ],
+        [
+          "float4",
+          "conductorEtaTransmission"
+        ],
+        [
+          "float4",
+          "conductorKThickness"
+        ],
+        [
+          "float4",
+          "absorptionEmissionFloor"
+        ],
+        [
+          "float4",
+          "modifiers"
+        ],
+        [
+          "float4",
+          "emissionSpectrumIntensity"
+        ]
+      ]
+    },
+    "AtmosphereCellRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "float4",
+          "density"
+        ]
+      ]
+    },
+    "MediumRecord": {
+      "layout": "natural",
+      "scene": true,
+      "fields": [
+        [
+          "uint64_t",
+          "identity"
+        ],
+        [
+          "uint",
+          "kind"
+        ],
+        [
+          "uint",
+          "reserved"
+        ],
+        [
+          "float4",
+          "optical"
+        ],
+        [
+          "float4",
+          "scattering"
+        ]
+      ]
+    },
+    "EmitterRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "positionRadius"
+        ],
+        [
+          "float4",
+          "radianceArea"
+        ],
+        [
+          "float4",
+          "sampling"
+        ],
+        [
+          "uint4",
+          "identity"
+        ]
+      ]
+    },
+    "PrimaryWorkRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "rayDirectionMin"
+        ],
+        [
+          "float4",
+          "hitBaryDistanceMax"
+        ],
+        [
+          "uint4",
+          "hitIdentity"
+        ],
+        [
+          "float4",
+          "reserved",
+          5
+        ],
+        [
+          "uint4",
+          "policy"
+        ]
+      ]
+    },
+    "PathWorkRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "throughputDiffuse"
+        ],
+        [
+          "float4",
+          "throughputGlossy"
+        ],
+        [
+          "float4",
+          "vertexPositionDistance"
+        ],
+        [
+          "float4",
+          "vertexViewBaryX"
+        ],
+        [
+          "uint4",
+          "vertexLocatorBaryY"
+        ]
+      ]
+    },
+    "PathMediumRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "optical",
+          10
+        ],
+        [
+          "uint4",
+          "parents",
+          2
+        ],
+        [
+          "uint4",
+          "identityDepth"
+        ]
+      ]
+    },
+    "PathResultRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "float4",
+          "diffuseDistance"
+        ],
+        [
+          "float4",
+          "glossyFlags"
+        ],
+        [
+          "float4",
+          "endpointPositionDistance"
+        ]
+      ]
+    },
+    "PathQueueRecord": {
+      "layout": "std430",
+      "fields": [
+        [
+          "uint4",
+          "dispatchCount"
+        ],
+        [
+          "uint4",
+          "iteration"
+        ]
+      ]
+    }
+  },
+  "kernels": {
+    "transport": {
+      "entries": {
+        "r2PrimaryVisibility": "compute"
+      },
+      "rayQuery": true,
+      "textures": true,
+      "bindings": {
+        "Frame": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "FrameRecord",
+          "access": "read"
+        },
+        "WorldAS": {
+          "binding": 1,
+          "type": "accelerationStructure",
+          "access": "read"
+        },
+        "Hits": {
+          "binding": 2,
+          "type": "storage",
+          "record": "HitRecord",
+          "access": "readWrite"
+        },
+        "Signals": {
+          "binding": 3,
+          "type": "storage",
+          "record": "SignalRecord",
+          "access": "readWrite"
+        },
+        "Guides": {
+          "binding": 4,
+          "type": "storage",
+          "record": "GuideRecord",
+          "access": "readWrite"
+        },
+        "HostDepth": {
+          "binding": 5,
+          "type": "storage",
+          "element": "float",
+          "access": "readWrite"
+        },
+        "Output": {
+          "binding": 6,
+          "type": "storage",
+          "element": "float4",
+          "access": "readWrite"
+        },
+        "PreviousLightHistory": {
+          "binding": 7,
+          "type": "storage",
+          "record": "LightHistoryRecord",
+          "access": "read"
+        },
+        "CurrentLightHistory": {
+          "binding": 8,
+          "type": "storage",
+          "record": "LightHistoryRecord",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2PrimaryVisibility": "minimal/r2PrimaryVisibility.slang"
+      },
+      "workgroups": {
+        "r2PrimaryVisibility": [
+          8,
+          8,
+          1
+        ]
+      }
+    },
+    "materials": {
+      "entries": {
+        "r2CompileMaterials": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Definitions": {
+          "binding": 0,
+          "type": "storage",
+          "record": "MaterialRecord",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2CompileMaterials": "minimal/r2CompileMaterials.slang"
+      },
+      "workgroups": {
+        "r2CompileMaterials": [
+          64,
+          1,
+          1
+        ]
+      }
+    },
+    "atmosphere": {
+      "entries": {
+        "r2CompileAtmosphere": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Cells": {
+          "binding": 0,
+          "type": "storage",
+          "record": "AtmosphereCellRecord",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2CompileAtmosphere": "minimal/r2CompileAtmosphere.slang"
+      },
+      "workgroups": {
+        "r2CompileAtmosphere": [
+          64,
+          1,
+          1
+        ]
+      }
+    },
+    "textureCopy": {
+      "entries": {
+        "r2TextureCopy": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Copy": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "TextureCopyRecord",
+          "access": "read"
+        },
+        "Source": {
+          "binding": 1,
+          "type": "sampler",
+          "access": "read"
+        },
+        "Pixels": {
+          "binding": 2,
+          "type": "storage",
+          "element": "uint",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2TextureCopy": "minimal/r2TextureCopy.slang"
+      },
+      "workgroups": {
+        "r2TextureCopy": [
+          8,
+          8,
+          1
+        ]
+      }
+    },
+    "textureCopyFloat": {
+      "entries": {
+        "r2TextureCopyFloat": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Copy": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "TextureCopyRecord",
+          "access": "read"
+        },
+        "Source": {
+          "binding": 1,
+          "type": "sampler",
+          "access": "read"
+        },
+        "Pixels": {
+          "binding": 2,
+          "type": "storage",
+          "element": "float4",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2TextureCopyFloat": "minimal/r2TextureCopyFloat.slang"
+      },
+      "workgroups": {
+        "r2TextureCopyFloat": [
+          8,
+          8,
+          1
+        ]
+      }
+    },
+    "reconstruction": {
+      "entries": {
+        "r2Temporal": "compute",
+        "r2Atrous": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "pushConstant": "DispatchRecord",
+      "bindings": {
+        "Frame": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "FrameRecord",
+          "access": "read"
+        },
+        "Signals": {
+          "binding": 1,
+          "type": "storage",
+          "record": "SignalRecord",
+          "access": "read"
+        },
+        "Guides": {
+          "binding": 2,
+          "type": "storage",
+          "record": "GuideRecord",
+          "access": "read"
+        },
+        "Previous": {
+          "binding": 3,
+          "type": "storage",
+          "record": "HistoryRecord",
+          "access": "read"
+        },
+        "History": {
+          "binding": 4,
+          "type": "storage",
+          "record": "HistoryRecord",
+          "access": "readWrite"
+        },
+        "Output": {
+          "binding": 5,
+          "type": "storage",
+          "element": "float4",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2Temporal": "minimal/r2Temporal.slang",
+        "r2Atrous": "minimal/r2Atrous.slang"
+      },
+      "workgroups": {
+        "r2Temporal": [
+          8,
+          8,
+          1
+        ],
+        "r2Atrous": [
+          8,
+          8,
+          1
+        ]
+      }
+    },
+    "presentation": {
+      "entries": {
+        "r2Meter": "compute",
+        "r2Display": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Frame": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "FrameRecord",
+          "access": "read"
+        },
+        "Composite": {
+          "binding": 1,
+          "type": "storage",
+          "element": "float4",
+          "access": "read"
+        },
+        "PreviousExposure": {
+          "binding": 2,
+          "type": "storage",
+          "element": "float2",
+          "access": "read"
+        },
+        "Exposure": {
+          "binding": 3,
+          "type": "storage",
+          "element": "float2",
+          "access": "readWrite"
+        },
+        "DisplayOutput": {
+          "binding": 4,
+          "type": "storage",
+          "element": "float4",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2Meter": "minimal/r2Meter.slang",
+        "r2Display": "minimal/r2Display.slang"
+      },
+      "workgroups": {
+        "r2Meter": [
+          256,
+          1,
+          1
+        ],
+        "r2Display": [
+          8,
+          8,
+          1
+        ]
+      }
+    },
+    "handoff": {
+      "entries": {
+        "r2HandoffVertex": "vertex",
+        "r2WorldHandoff": "fragment",
+        "r2DisplayHandoff": "fragment",
+        "r2ViewmodelHandoff": "fragment"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Frame": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "FrameRecord",
+          "access": "read"
+        },
+        "Color": {
+          "binding": 1,
+          "type": "storage",
+          "element": "float4",
+          "access": "read"
+        },
+        "HostDepth": {
+          "binding": 2,
+          "type": "storage",
+          "element": "float",
+          "access": "read"
+        },
+        "Guides": {
+          "binding": 3,
+          "type": "storage",
+          "record": "GuideRecord",
+          "access": "read"
+        }
+      },
+      "sources": {
+        "r2HandoffVertex": "minimal/r2HandoffVertex.slang",
+        "r2WorldHandoff": "minimal/r2WorldHandoff.slang",
+        "r2DisplayHandoff": "minimal/r2DisplayHandoff.slang",
+        "r2ViewmodelHandoff": "minimal/r2ViewmodelHandoff.slang"
+      },
+      "workgroups": {}
+    },
+    "resolve": {
+      "entries": {
+        "r2Resolve": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Frame": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "FrameRecord",
+          "access": "read"
+        },
+        "Input": {
+          "binding": 1,
+          "type": "storage",
+          "element": "float4",
+          "access": "read"
+        },
+        "Output": {
+          "binding": 2,
+          "type": "storage",
+          "element": "float4",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2Resolve": "minimal/r2Resolve.slang"
+      },
+      "workgroups": {
+        "r2Resolve": [
+          8,
+          8,
+          1
+        ]
+      }
+    },
+    "import": {
+      "entries": {
+        "r2Import": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Frame": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "FrameRecord",
+          "access": "read"
+        },
+        "Composition": {
+          "binding": 1,
+          "type": "storageImage",
+          "format": "rgba16f",
+          "access": "readWrite"
+        },
+        "Color": {
+          "binding": 2,
+          "type": "storage",
+          "element": "float4",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2Import": "minimal/r2Import.slang"
+      },
+      "workgroups": {
+        "r2Import": [
+          8,
+          8,
+          1
+        ]
+      }
+    },
+    "sourcePreparation": {
+      "entries": {
+        "r2PrepareSources": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Frame": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "FrameRecord",
+          "access": "read"
+        }
+      },
+      "sources": {
+        "r2PrepareSources": "minimal/r2PrepareSources.slang"
+      },
+      "workgroups": {
+        "r2PrepareSources": [
+          64,
+          1,
+          1
+        ]
+      }
+    }
+  },
+  "constants": {
+    "viewDomains": {
+      "WORLD": 0,
+      "VIEWMODEL": 1
+    },
+    "rayMasks": {
+      "CAMERA_PATH": 1,
+      "REFLECTION": 2,
+      "SHADOW": 4,
+      "TRANSPORT": 8,
+      "VIEWMODEL": 16,
+      "RASTER_ONLY": 128
+    },
+    "geometryFlags": {
+      "SOURCE_DEPTH": 1
+    },
+    "layerFlags": {
+      "COVERAGE_TINT": 1,
+      "TEXTURE_SAMPLER": 2,
+      "TINT_SRGB": 4,
+      "EMISSION_TINT_SRGB": 8
+    },
+    "materialFlags": {
+      "CONDUCTOR": 1,
+      "EMITTER": 2,
+      "DISTANCE_ROUGHNESS": 4,
+      "THIN": 8
+    },
+    "boundaryRoles": {
+      "NONE": 0,
+      "VOLUME": 1,
+      "CONTACT": 2,
+      "CLIP": 3
+    },
+    "mediumKinds": {
+      "AIR": 0,
+      "WATER": 1,
+      "GLASS": 2,
+      "ICE": 3
+    },
+    "hitFlags": {
+      "HIT": 1,
+      "FRONT": 2
+    },
+    "frameFlags": {
+      "PREVIOUS_VALID": 1,
+      "WRITE_HITS": 2,
+      "LIGHT_REUSE": 4,
+      "LIGHT_REUSE_VALID": 8,
+      "CAMERA_IN_WATER": 16,
+      "RAW_CLAMP": 64,
+      "INITIAL_MEDIA": 128,
+      "CLOUDS_VISIBLE": 256
+    },
+    "guideFlags": {
+      "PATH_SAMPLED": 1,
+      "PATH_GLOSSY": 2,
+      "PATH_DELTA": 4,
+      "PRIMARY_DIELECTRIC": 8,
+      "PRIMARY_REFLECTED": 16,
+      "PREFIX_TRUNCATED": 32,
+      "TERMINAL_HIT": 64,
+      "ENDPOINT_VALID": 128,
+      "ENDPOINT_HIT": 256,
+      "PLANAR_REFLECTION": 512,
+      "REFLECTION_MOTION_VALID": 1024,
+      "TERMINAL_MOVED": 2048,
+      "TERMINAL_MOTION_INVALID": 4096,
+      "MEDIUM_STATUS_SHIFT": 13,
+      "MEDIUM_STATUS_MASK": 57344,
+      "CLIPPED_MEDIUM": 65536,
+      "MOTION_VALID": 131072,
+      "PRIMARY_HIT": 262144
+    },
+    "coverageKinds": {
+      "OPAQUE": 0,
+      "CUTOUT": 1,
+      "FILTER": 2,
+      "DIELECTRIC": 3
+    },
+    "sourceKinds": {
+      "POINT": 0,
+      "QUAD": 1
+    }
+  },
+  "sizes": {
+    "materialDefinitions": 70,
+    "mediumCapacity": 4,
+    "atmosphereWidth": 512,
+    "atmosphereHeight": 256
+  },
+  "surfaceProperties": {
+    "WET": 1,
+    "THIN": 2,
+    "GLAZED": 4,
+    "HURT_SHIFT": 8,
+    "FLASH_SHIFT": 12,
+    "LIGHT_SHIFT": 16,
+    "TRANSLUCENT": 1048576
+  },
+  "mediumProfiles": {
+    "minimumTint": 0.04,
+    "maximumTint": 0.98,
+    "tintAbsorption": 0.7,
+    "profiles": {
+      "WATER": {
+        "ior": 1.333,
+        "absorption": [
+          0.35,
+          0.1,
+          0.06
+        ],
+        "scattering": [
+          0.004,
+          0.007,
+          0.012
+        ],
+        "tinted": false
+      },
+      "GLASS": {
+        "ior": 1.5,
+        "absorption": [
+          0.05,
+          0.05,
+          0.05
+        ],
+        "scattering": [
+          0,
+          0,
+          0
+        ],
+        "tinted": true
+      },
+      "ICE": {
+        "ior": 1.31,
+        "absorption": [
+          0,
+          0,
+          0
+        ],
+        "scattering": [
+          0.01,
+          0.015,
+          0.025
+        ],
+        "tinted": true
+      }
+    },
+    "materialKinds": {
+      "8": "WATER",
+      "9": "WATER",
+      "18": "GLASS",
+      "24": "GLASS",
+      "43": "GLASS",
+      "44": "GLASS"
+    },
+    "glassSheets": [
+      48,
+      49
+    ],
+    "opaqueContacts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      21,
+      22,
+      23,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      45,
+      46,
+      47
+    ]
+  },
+  "execution": {
+    "reconstructionIterations": 1,
+    "sourcePreparationColumns": 65535,
+    "pathQueueColumns": 256,
+    "pathBounces": 1
+  },
+  "formats": {
+    "COMPOSITION": "R16G16B16A16_SFLOAT",
+    "DEPTH": "D32_SFLOAT",
+    "RADIANCE": "R32G32B32A32_SFLOAT",
+    "DISPLAY_TARGET": "R8G8B8A8_UNORM"
+  },
+  "reservedEncodings": {
+    "frameFlagBits": [
+      32
+    ],
+    "sourceKinds": [
+      2
+    ]
+  },
+  "packedSemantics": {
+    "history": {
+      "roughness": "momentsB.z",
+      "specularDistance": "momentsB.w",
+      "planeOffset": "asfloat(path.w)"
+    },
+    "guide": {
+      "reflectionDistance": "boundarySpecular.w"
+    },
+    "precision": "all original fp32/uint32; no quantization"
+  },
+  "acceleration": {
+    "automaticHitCoverage": [
+      "OPAQUE",
+      "DIELECTRIC"
+    ],
+    "requiresDoubleSided": true,
+    "clipContacts": "always require candidates"
+  },
+  "resourceAliases": {
+    "primaryGuides": {
+      "input": "PrimaryWorkRecord",
+      "output": "GuideRecord",
+      "rule": "same pixel owns the record; primary work is consumed before guide publication; policy.w aliases guide.path.w and publication clears it"
+    }
+  }
+}

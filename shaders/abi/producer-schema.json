@@ -1,0 +1,80 @@
+{
+  "api": 1,
+  "tintDomain": "one ARGB factor per metadata primitive corner; uniform primitive tables repeat this pattern",
+  "activePrimitiveDomain": "Facts.indicesSurface.x grants presence; withdrawn source holes emit degenerate AS indices",
+  "kernels": {
+    "producerDecode": {
+      "entries": {
+        "r2DecodeProducer": "compute"
+      },
+      "rayQuery": false,
+      "textures": false,
+      "bindings": {
+        "Decode": {
+          "binding": 0,
+          "type": "uniform",
+          "record": "DispatchRecord",
+          "access": "read"
+        },
+        "Source": {
+          "binding": 1,
+          "type": "storage",
+          "element": "uint",
+          "access": "read"
+        },
+        "Tint": {
+          "binding": 2,
+          "type": "storage",
+          "element": "uint",
+          "access": "read"
+        },
+        "Facts": {
+          "binding": 3,
+          "type": "storage",
+          "record": "TriangleRecord",
+          "access": "read"
+        },
+        "Surfaces": {
+          "binding": 4,
+          "type": "storage",
+          "record": "SurfaceRecord",
+          "access": "read"
+        },
+        "Positions": {
+          "binding": 5,
+          "type": "storage",
+          "record": "PositionRecord",
+          "access": "readWrite"
+        },
+        "Corners": {
+          "binding": 6,
+          "type": "storage",
+          "record": "CornerRecord",
+          "access": "readWrite"
+        },
+        "Indices": {
+          "binding": 7,
+          "type": "storage",
+          "element": "uint",
+          "access": "readWrite"
+        },
+        "Triangles": {
+          "binding": 8,
+          "type": "storage",
+          "record": "TriangleRecord",
+          "access": "readWrite"
+        }
+      },
+      "sources": {
+        "r2DecodeProducer": "minimal/r2DecodeProducer.slang"
+      },
+      "workgroups": {
+        "r2DecodeProducer": [
+          64,
+          1,
+          1
+        ]
+      }
+    }
+  }
+}

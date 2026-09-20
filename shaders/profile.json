@@ -1,0 +1,7 @@
+{
+  "name": "rt_render_experiment-r2",
+  "revision": 1,
+  "program": "full",
+  "purpose": "Minimal shader template for the R2 engine",
+  "resolutionPolicy": "Explicit host-sized output"
+}

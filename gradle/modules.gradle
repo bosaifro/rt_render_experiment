@@ -1,0 +1,42 @@
+configurations {
+    rendererLibraries { canBeConsumed = false; canBeResolved = true }
+}
+
+dependencies {
+    rendererLibraries 'org.lwjgl:lwjgl:3.4.1'
+    rendererLibraries 'org.lwjgl:lwjgl-vulkan:3.4.1'
+    rendererLibraries 'org.lwjgl:lwjgl-vma:3.4.1'
+    rendererLibraries 'org.joml:joml:1.10.8'
+    rendererLibraries 'org.slf4j:slf4j-api:2.0.17'
+    rendererLibraries 'org.jspecify:jspecify:1.0.0'
+}
+
+sourceSets {
+    rendererContract {
+        java.setSrcDirs(['modules/contract/src/main/java'])
+        resources.setSrcDirs([])
+        compileClasspath = files()
+    }
+    rendererVulkan {
+        java.setSrcDirs(['modules/vulkan/src/main/java'])
+        resources.setSrcDirs([])
+        compileClasspath = files(sourceSets.rendererContract.output, configurations.rendererLibraries)
+    }
+    rendererEngine {
+        java.setSrcDirs(['modules/engine/src/main/java'])
+        resources.setSrcDirs([])
+        compileClasspath = files(sourceSets.rendererContract.output, sourceSets.rendererVulkan.output, configurations.rendererLibraries)
+    }
+    minecraftIntegration {
+        java.setSrcDirs(['modules/minecraft-26.2/src/main/java'])
+        resources.setSrcDirs(['modules/minecraft-26.2/src/main/resources'])
+        compileClasspath = files(sourceSets.client.output, sourceSets.client.compileClasspath, sourceSets.rendererContract.output, sourceSets.rendererVulkan.output, sourceSets.rendererEngine.output, sourceSets.rendererVulkan.compileClasspath)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach { options.release = 25 }
+java { sourceCompatibility = JavaVersion.VERSION_25; targetCompatibility = JavaVersion.VERSION_25 }
+
+['compileRendererContractJava', 'compileRendererVulkanJava', 'compileRendererEngineJava'].each { taskName ->
+    tasks.named(taskName, JavaCompile) { options.compilerArgs.addAll(['-Xlint:all', '-Werror']) }
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "rt_render_experiment",
+  "version": "0.0.1",
+  "name": "rt_render_experiment",
+  "description": "Producer-fed Java/LWJGL renderer with a scoped Minecraft frame-graph entry.",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.rt_render_experiment.reentry.RtRenderExperimentClient"
+    ]
+  },
+  "mixins": [
+    "rt_render_experiment.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "=26.2",
+    "java": ">=25"
+  },
+  "license": "CC0-1.0"
+}

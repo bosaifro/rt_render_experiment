@@ -1,0 +1,28 @@
+# Build and local state
+.gradle/
+build/
+bin/
+engine/.gradle/
+engine/build/
+.run/
+run/
+logs/
+*.log
+*.hprof
+*.jfr
+*.dmp
+
+# IDE and local configuration
+.idea/
+.vscode/
+*.iml
+.env
+.env.*
+
+# Generated native and shader outputs
+*.class
+*.jar
+!/gradle/wrapper/gradle-wrapper.jar
+*.spv
+__pycache__/
+*.py[cod]

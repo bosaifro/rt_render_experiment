@@ -1,0 +1,22 @@
+rt_render_experiment
+
+First-party material in this repository is dedicated to the public domain under CC0-1.0.
+The complete CC0-1.0 legal code is in LICENSE.
+
+This repository also redistributes third-party material that is NOT covered by that dedication:
+
+  gradlew
+  gradlew.bat
+  gradle/wrapper/gradle-wrapper.jar
+
+  Gradle Wrapper
+  Copyright the original author or authors
+  Licensed under the Apache License, Version 2.0
+  https://www.apache.org/licenses/LICENSE-2.0
+  SPDX-License-Identifier: Apache-2.0
+
+  gradle-wrapper.jar carries its own META-INF/LICENSE.
+
+Dependencies resolved from Maven at build time are not redistributed here and keep their own licenses.
+
+CC0-1.0 waives copyright and related rights only. It does not grant patent or trademark rights.

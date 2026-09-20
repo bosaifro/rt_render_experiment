@@ -1,0 +1,42 @@
+dependencies {
+    implementation 'io.github.llamalad7:mixinextras-fabric:0.5.4'
+}
+
+loom {
+    mods {
+        rt_render_experiment {
+            sourceSet sourceSets.minecraftIntegration
+            sourceSet sourceSets.rendererContract
+            sourceSet sourceSets.rendererVulkan
+            sourceSet sourceSets.rendererEngine
+        }
+    }
+}
+
+def compileShaders = tasks.register('compileShaders', Exec) {
+    inputs.files(fileTree('shaders') { include '**/*.slang'; include 'abi/*.json'; include 'profile.json' }, fileTree('tools/shader_package') { include '*.py' }, file('tools/shaders/spirv_validation.py'))
+    outputs.dir(layout.buildDirectory.dir('generated/shader-package'))
+    environment 'PYTHONDONTWRITEBYTECODE', '1'
+    commandLine 'python3', file('tools/shader_package/build_package.py').absolutePath, '--output', layout.buildDirectory.dir('generated/shader-package').get().asFile.absolutePath
+}
+
+
+tasks.named('processMinecraftIntegrationResources') {
+    dependsOn compileShaders
+    from(compileShaders) { into 'rt_render_experiment/r2-shaders' }
+}
+
+tasks.named('jar', Jar) {
+    from sourceSets.minecraftIntegration.output
+    from sourceSets.rendererContract.output
+    from sourceSets.rendererVulkan.output
+    from sourceSets.rendererEngine.output
+}
+
+tasks.named('runClient') {
+    dependsOn tasks.named('minecraftIntegrationClasses')
+    classpath += files(sourceSets.minecraftIntegration.output, sourceSets.rendererContract.output, sourceSets.rendererVulkan.output, sourceSets.rendererEngine.output)
+    args '--graphicsBackend', 'vulkan'
+    jvmArgs '--enable-native-access=ALL-UNNAMED', '-Djoml.nounsafe=true'
+
+}
